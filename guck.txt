@@ -1,0 +1,877 @@
+
+
+  GGGGG   UU  UU    CCCC    KK  KK          VV  VV     11            777777
+ GG       UU  UU   CC  CC   KK KK           VV  VV    111                77
+ GG       UU  UU   CC       KKKK            VV  VV     11               77
+ GG GGG   UU  UU   CC       KKK             VV  VV     11              77
+ GG  GG   UU  UU   CC       KKKK            VV  VV     11             77
+ GG  GG   UU  UU   CC  CC   KK KK            VVVV      11      ..     77
+  GGGGG    UUUUU    CCCC    KK  KK            VV     111111    ..     77
+
+
+ © 1988-1990 by Marcel Waldvogel
+
+ (Wer diesen Text schon einmal gelesen hat, findet am Schluss eine
+ Zusammenfassung von Neuerungen und einen Abschnitt über Problemlösungen.
+ Insbesondere die im Inhaltsverzeichnis mit einem Stern ("*"), Plus ("+")
+ oder Doppelkreuz ("#") versehenen Kapitel werden dem Leser empfohlen, da
+ sich in ihnen entweder wichtige Informationen befinden (Stern), oder sie
+ sich in der letzten Zeit stark geändert haben (Plus) oder neu dazugekommen
+ sind (Doppelkreuz).)
+
+
+
+ Inhaltsverzeichnis
+ ==================
+
+  1.     Die Idee
+  2.     Die Fähigkeiten
+  2.1    Textmodus
+  2.1.1  WP-Modus
++ 2.1.2  Der Dump- und der XDump-Modus
++ 2.1.3  Tastenbelegung im Textmodus
+  2.1.4  Maustasten
++ 2.1.5  Ausdrucken
+  2.2    Grafikmodus
+  2.2.1  Unterstützte Bildformate
++ 2.2.2  Tastenbelegung im Grafikmodus
+  2.2.3  Maustasten
+# 2.3    Editoraufruf
+# 2.4    Die Eingabezeile
++ 3.     INSTGUCK oder Wie konfiguriere ich GUCK
+  3.1    Erklärung des Autostarts
+  4.     Die Funktionen von SETUP
+  5.     Kurzinstallation für eilige Floppybesitzer
+  6.     Kurzinstallation für eilige Harddiskbesitzer
+  7.     Kurzinstallation für die Benutzer von GEMINI
+  8.     Probleme und ihre Lösung
+  9.     Technische Daten für Interessierte
+  10.    Technische Daten für Uninteressierte
++ 11.    Sichtbare Verbesserungen in den letzten Versionen
+  12.    Bugs (Fehler und Unschönheiten)
+  13.    Ich möchte folgenden Leuten danken
++ 14.    Liste der Dateien
+* 15.    Copyrightbestimmungen
+
+
+
+ 1. Die Idee
+ ===========
+
+ Die Idee zu GUCK stammt von R. Fuchs, dessen VIEW 1.1 mir einmal zwischen
+ die Finger geriet. Doch bald begann ich mich an einzelnen Unzulänglich-
+ keiten des Programms zu stören. Also gab es für mich nur eine Lösung:
+ selbst so etwas zu schreiben. Die hier vorliegende Version von GUCK ist das
+ (vorläufige) Resultat meiner Anstrengungen.
+
+
+
+ 2. Die Fähigkeiten
+ ==================
+
+ Es kann jede beliebige Datei, die vollständig in den Hauptspeicher ihres
+ Atari ST passt, einlesen und auch anzeigen. Dabei wird je nach Dateiart
+ eine der folgenden Darstellungsarten gewählt:
+
+ - Textmodus
+ - Grafikmodus
+
+ Diese beiden Modi möchte ich nun gerne beschreiben:
+
+
+ 2.1 Textmodus
+ -------------
+ Dabei werden alle Zeichen angezeigt, die Ihr Atari besitzt, also z.B. deut-
+ sche Umlaute, griechisches Alphabet und LCD-Ziffern.
+ Folgende Zeichen werden jedoch speziell behandelt:
+
+ - [NUL] (ASCII 0): Sieht im Original-ST-Zeichesatz genau gleich aus wie das
+   Leerzeichen. Deshalb kann es je nach Lust und Laune als von links oben
+   nach rechts unten laufende Zeichenfolge "NUL" oder "00" dargestellt wer-
+   den. Dies ist mit der Taste [0] umschaltbar.
+ - [TAB] (ASCII 8): Wird wahlweise expandiert, so dass die nächste Cursor-
+   position wieder durch 2, 4 oder 8 ohne Rest teilbar ist. Standardmässig
+   sind 8er-Tabulatoren eingestellt.
+ - [LF] (ASCII 10): Der Text geht am Anfang der nächsten Zeile weiter
+   (Zeilenende).
+ - [CR] (ASCII 13): Wenn es unmittelbar vor einem LF steht, wird es nicht an-
+   gezeigt, sonst aber ist es die schräge Zeichenfolge "CR".
+ - Falls das letzte Zeichen einer Datei ein [Ctrl-Z] (ASCII 26) ist, wird es
+   nicht angezeigt; der Rest des Textes ist davon nicht betroffen.
+
+ Im 1st-Word-Modus werden einige Spezialzeichen lesbar dargestellt bzw.
+ unterdrückt, während im Dump-Modus (ausser [NUL]) keine Zeichen
+ interpretiert werden.
+
+
+ 2.1.1 WP-Modus
+               
+ Der 1st-Word-Modus (kurz WP-Modus) wird automatisch eingeschalten, wenn
+ das erste Zeichen den ASCII-Wert 31 hat (dies kennzeichnet bei 1st Word
+ (Plus) den Anfang einer Spezialzeile, wie z.B. Lineal oder Formatangabe).
+ Er kann jedoch manuell mit der Taste [W] ein- und ausgeschalten werden.
+ Dort gelten folgende Änderungen:
+
+ - [FF] (ASCII 12, fester Seitenumbruch) wird nicht dargestellt.
+ - Das Zeichen nach ASCII 11 bzw. [ESC] wird, wie auch jenes selbst, nicht
+   angezeigt. (Diese kennzeichenen für 1st-Word die Länge eines Absatzes,
+   der nicht umbrochen werden soll, bzw. eine Attributumschaltsequenz)
+ - ASCII 25 (weicher Trennstrich) wird wie in 1st Word mit der Wellenlinie
+   dargestellt.
+ - ASCII 28 ist ein Leerzeichen, welches nur zur Formatierung eingefügt
+   wurde (sogenanntes "Stretch Space"). Dieses erscheint als Leerzeichen.
+ - ASCII 30 kennzeichnet ein verlängerbares Leerzeichen und wird auch als
+   normales Leerzeichen ausgegeben.
+
+
+ 2.1.2 Der Dump- und der XDump-Modus
+                                    
+ Im sogenannten Dump-Modus erfolgt kein Zeilenumbruch und ausnahmslos ALLE
+ Zeichen werden dargestellt (ASCII 0 weiterhin in eigener Manier). Deshalb
+ hat auch die Taste [T] (Tabulatorbreite) keine Bedeutung. Dieser Modus
+ lässt sich an der anders aufgebauten Titelzeile erkennen. Er wird auto-
+ matisch eingeschaltet, wenn eine Zeile (der Abstand zwischen zwei LF-
+ Zeichen (ASCII 10)) länger als 300 Zeichen ist. Falls die Dateilänge noch
+ genau 32000 Bytes beträgt, wird die Datei als Bild im Bildschirmformat
+ angesehen und im Grafikmodus dargestellt. Falls das ausnahmsweise nicht die
+ richtige Entscheidung sein sollte, gelangen Sie durch Drücken von [Tab]
+ (Details dazu siehe Kapitel 2.1.3 bzw. 2.2.2) in den Textmodus.
+
+ Seit GUCK V1.6a wird der Dump-Modus nicht mehr automatisch aktiviert. An
+ seine Stelle trat der neue XDump-Modus. Vom XDump-Modus gelangt man mit
+ [X] in den Dump-Modus und von dort auch wieder in den XDump-Modus zurück.
+ Der XDump-Modus unterscheidet sich vom Dump-Modus nur darin, dass nur die
+ Zeichen im ASCII-Bereich 32..160 (Buchstaben, Zahlen, häufige Sonderzeichen
+ und Umlaute) dargestellt werden. Alle anderen werden durch ein feines hoch-
+ gestelltes "x" ersetzt. Der Vorteil dieses Modus besteht darin, dass man
+ ASCII-Texte schneller findet.
+
+ In allen Textmodi werden Zeilen, die breiter als der Bildschirm sind,
+ einfach abgeknickt und in der nächsten Bildschirmzeile weitergeführt.
+ Der Zeilenzähler zählt die Textzeilen (Line Feeds) und nicht die
+ Bildschirmzeilen.
+
+
+ 2.1.3 Tastenbelegung im Textmodus
+                                  
+ Im Textmodus kann wie folgt herumgefahren werden: ([AB] ist Pfeil nach
+ unten, [AUF] ist Pfeil nach oben)
+
+ - Anfang der Datei: [Home]
+ - Seite nach oben:  [Ctrl-AUF], [Shift-AUF]
+ - Zeile nach oben:  [AUF]
+ - Zeile nach unten: [AB]
+ - Seite nach unten: [Ctrl-AB], [Shift-AB]
+ - Ende der Datei:   [Ctrl-Home], [Shift-Home], [Alt-E]
+
+ Zur Kompatibilität mit der Anzeigeroutine des Desktop sind auch folgende
+ Tasten zulässig:
+
+ - [Return] geht eine Zeile nach unten
+ - [Space] rollt zwanzig Zeilen nach unten
+
+ Zum Ausgleich für [Space] und für alle LED-Benutzer gibt es neu auch
+
+ - [Backspace] rollt zwanzig Zeilen nach oben
+
+ Für dBMan-Freunde wurden folgende Tastenkombinationen eingeführt:
+
+ - [Ctrl-U] geht eine Seite nach oben (UP)
+ - [Ctrl-D] geht eine Seite nach unten (DOWN)
+
+ Zusätzlich ist das numerische Tastenfeld analog einer IBM-Tastatur belegt:
+
+        +-------+-------+-------+
+        | 7     | 8     | 9     |
+        |       |       |       |
+        | Home  | ^     | PgUp  |
+        +-------+-------+-------+
+        | 4     | 5     | 6     |
+        |       |       |       |
+        | <     |       | >     |
+        +-------+-------+-------+
+        | 1     | 2     | 3     |
+        |       |       |       |
+        | End   | v     | PgDn  |
+        +-------+-------+-------+
+
+ Die weiteren Funktionen im Textmodus sind:
+
+ - [P] (Print) druckt die gesamte Datei mit Zeichenwandlung aus.
+ - [Ctrl-P] druckt die gesamte Datei ohne irgendwelche Zeichenwandlung aus.
+ - [B] (Block Print) druckt die Datei beginnend mit der aktuellen Zeile (das
+   ist diejenige, die sich direkt unter der Statuszeile befindet) mit
+   Zeichenwandlung aus. Näheres dazu in "2.1.5 Ausdrucken".
+ - [Ctrl-L] (Laserdrucker, ASCII-Code von FormFeed) führt auf dem Drucker
+   einen Seitenvorschub durch. Diese Funktion wurde für die Besitzer von
+   Laserdruckern eingebaut, kann aber auch von allen anderen benutzt werden.
+ - [0] schaltet zwischen den beiden Darstellungsformen des ASCII-Zeichens NUL
+   um (eingebaut, da sich unter den regelmässigen Anwendern fanatische An-
+   hänger sowohl der einen wie auch der anderen Form befinden).
+ - [W] wechselt zwischen WP-Modus und reiner Textdarstellung. Das Einschalten
+   dieses Modus schaltet den Dumpmodus aus.
+ - [D] wechselt zwischen Textdarstellung und Dump-Modus. Das Einschalten
+   dieses Modus schaltet den WP-Modus aus. In diesem Modus spielt die Ein-
+   stellung der Tabulatorexpansion (siehe unten) keine Rolle.
+ - [X] wechselt bei eingeschaltetem Dump-Modus zwischen dem neuen XDump-Modus
+   (welcher voreingestellt ist) und dem altbekannten Dump-Modus.
+ - [I] invertiert den Bildschirm (siehe auch Bildmodus).
+ - [T] wechselt zyklisch zwischen den Tabulatorgrössen 2, 4 und 8 und
+   ausgeschalteter Tabulatorexpansion (Default ist 8).
+ - [G] springt eine Zeile (bzw. im (X)Dumpmodus ein bestimmtes Byte) an
+   (siehe auch Kapitel 2.4). Falls die Eingabe leer sein sollte, bleibt
+   der Cursor in der aktuellen Zeile.
+ - [Ctrl-F] sucht nach einer Zeichenkette. Es wird ab der aktuellen Text-
+   stelle vorwärts gesucht (siehe auch Kapitel 2.4).
+ - [Ctrl-G] sucht weiter nach der unter [Ctrl-F] eingegebene Zeichenkette.
+ - [Tab] wechselt in den Grafikmodus.
+ - [Ctrl-E] ruft den Texteditor auf (siehe Kapitel 2.3).
+ - [N] wechselt zur nächsten Datei (falls auf der Kommandozeile mehrere
+   Dateien angegeben sind).
+ - [Q], [Esc], [Undo] oder [Ctrl-Q] beenden das Programm (es hat für jeden
+   etwas). Für Maustasten siehe weiter unten.
+
+ Natürlich ist dies ein vorbildliches Programm. Somit gelangen Sie durch
+ Drücken der Taste [Help] in den kontextsensitiven Helpscreen (tönt gut,
+ nicht?). Das heisst, je nach eingeschaltetem Modus sieht der Hilfeschirm
+ anders aus. Im Hilfebildschirm für den Textmodus sind alle aktiven
+ Umschalter ("W", "D", "I") mit einem Haken versehen, so dass mit einem
+ Blick der augenblickliche Stand der Dinge erfasst werden kann. Hinter
+ "Tabulatorgrösse" steht in Klammern die augenblickliche Tabulatorgrösse
+ ("-" bedeutet Tabulatorexpansion aus, "2", "4", "8" stehen für die
+ entsprechende Grösse).
+
+ Im Textmodus gibt es noch einen zweiten Hilfeschirm, in dem alle
+ Cursorfunktionen aufgeführt sind. Zu ihm gelangt man vom ersten Hilfeschirm
+ durch Drücken einer beliebigen Taste (ausser [Undo]).
+
+
+ 2.1.4 Maustasten
+                 
+ Die linke Maustaste hat dieselbe Funktion wie [AB], also eine Zeile nach
+ unten. Die rechte Maustaste fährt hingegen nach oben, während das Gedrückt-
+ halten beider Tasten wie [ESC] die aktuelle Funktion bzw. das Programm
+ beendet. Diese Maustastenbelegung gilt im ganzen Programm.
+
+ Die Maustasten haben eine "Tastenwiederholung", jedoch nicht das Drücken
+ beider Maustasten.
+
+ Somit lässt sich eine Textdatei mit fünf Mausklicken komplett ansehen:
+ - Doppelklick links auf die Datei, um GUCK zu starten,
+ - Gedrückthalten der linken Taste, um den Rest des Dokumentes zu sehen,
+ - Drücken von beiden Tasten, um GUCK zu beenden.
+
+
+ 2.1.5 Ausdrucken
+                 
+ Alle Druckvorgänge (Datei drucken mit/ohne Zeichenwandlung und Block
+ drucken) lassen sich mit [ESC] oder beiden Maustasten unterbrechen.
+
+ Falls der Drucker einmal während 10 Sekunden kein Zeichen mehr annimmt
+ (Timeout ist eingetreten), erscheint in der Statuszeile eine Abfrage, ob
+ weiter gedruckt oder aufgehört werden soll. Sollte binnen 20 Sekunden
+ niemand reagieren, so versucht GUCK den Drucker erneut anzusprechen. Diese
+ Funktion ist nützlich, wenn ein langes Dokument in Abwesenheit ausgedruckt
+ werden soll und der Drucker nicht nachkommt (was besonders bei komplizierten
+ PostScript-Dokumenten öfters auftreten soll).
+ 
+ Zum Ausdrucken eines Blockes bestimmt man vorher die Zeilennummer bzw.
+ die Bytenummer, an der der Ausdruck beendet werden soll. Danach geht man
+ an den Anfang des auszudruckenden Teiles und startet den Druckvorgang.
+ Sobald nun die gewünschte Zahl in der Anzeige auftaucht, drückt man [ESC].
+ Zugegeben eine etwas barbarische Methode. Aber diese Funktion benötige ich
+ so selten (eigentlich habe ich sie noch nie gebraucht, nur getestet, ob
+ sie auch läuft...)
+
+ In den beiden Druckformen mit Zeichenwandlung ([P] und [B]) wird die mit
+ INSTGUCK definierte Druckerkonfigurationsdatei zu laden versucht. Falls
+ mit INSTGUCK kein Name definiert wurde, wird der Text ohne Zeichenwandlung
+ ausgedruckt. Sollte beim Laden ein Fehler auftreten, erscheint eine Fehler-
+ meldung und es wird nichts ausgedruckt. Danach werden bis zum Programmende
+ alle Ausdruckvorgänge ohne Zeichenwandlung vorgenommen.
+
+ Falls die Zeichenwandlung aktiv ist, wird vor dem Drucken die Drucksequenz
+ $20 (Vertikale Initialisierung) gesendet, nach dem Drucken wird die Sequenz
+ $21 (Druckende) gesendet. Genaueres entnehmen Sie bitte den beiligenden
+ .HEX-Dateien. So erstellte .HEX-Dateien können Sie z.B. mit INSTALL.PRG aus
+ dem 1st-Word-Paket oder mit MAKE_CFG.PRG aus dem TurboAss-Paket übersetzen
+ (bei letzterem sollten Sie auf Grossschrift bei den Steuersequenzen achten).
+
+
+
+ 2.2 Grafikmodus
+ ---------------
+ Der Grafikmodus wird automatisch angewählt, wenn die geladene Datei einem
+ der nachfolgenden Grafikformate entspricht. Zur Feststellung dienen die
+ Extension und die Länge (falls es sich um ein unkomprimiertes Format han-
+ delt). Bei einem komprimierten Format wird auf die Extension und allfällige
+ "Magic Numbers" geachtet.
+
+ Im folgenden kurz die Bearbeitungsschritte eines Bildes:
+
+ Zuerst wird es (falls nötig) dekomprimiert. Danach gibt es zwei Fälle:
+ a) Das Bild ist in der richtigen Auflösung. Dann wird es ganz einfach
+    angezeigt.
+ b) Das Bild ist nicht in der richtigen Auflösung. Dann wird es, falls es
+    nicht bereits monochrom ist, in ein monochromes Bild gewandelt.
+    Dieses Bild wird dann unter Ausnutzung bloss einer Farbebene angezeigt.
+
+ Falls das Bild grösser als der Bildschirm ist, kann mit der Maus im Bild
+ gescrollt werden. Das Bild folgt einfach der Maus, d.h. wenn die Maus z.B.
+ in der linken oberen Bildschirmecke ist,  wird auch der linke obere Bildteil
+ angezeigt.
+
+
+ 2.2.1 Unterstützte Bildformate
+                               
+ Extension      Länge (Bytes)   Beschreibung
+
+ .DOO, .PIC     32000           monochrom, Screenformat
+ .PI3           32034/32066     monochrom, Degas (Elite)
+ .PC3            ---            monochrom, Degas Elite komprimiert
+ .IMG            ---            monochrom, komprimiert
+ .IMG            ---            monochrom, Calamus-Page-IMG
+ .CRG            ---            monochrom, Calamus-Rastergraphik
+ .PAC            ---            monochrom, STAD komprimiert
+
+ .PI2           32034/32066     mittlere Auflösung, Degas (Elite)
+ .PC2            ---            mittlere Auflösung, Degas Elite komprimiert
+
+ .PI1           32034/32066     niedrige Auflösung, Degas (Elite)
+ .PC1            ---            niedrige Auflösung, Degas Elite
+ .NEO           32128           niedrige Auflösung, Neochrome
+
+ .GEM            ---            Metafiles
+
+
+ - Bilder der niedrigen Auflösung (.PI1, .PC1, .NEO) werden für die
+   Darstellung in nicht-niedriger Auflösung errordiffundiert. Dies ergibt
+   sehr natürliche Grauwerte, jedoch dauert diese Umwandlung ca. 5 Sekunden.
+   Der Betrachter wird jedoch mit einem sehr ansprechend aussehenden Bild
+   belohnt.
+ - .PI2-Bilder können nur in der mittleren Auflösung betrachtet werden.
+ - .PC2-Bilder können auch in anderen Auflösungen betrachtet werden. Dabei
+   werden sie nach einem äusserst einfachen Prinzip (sie werden wie ein .PC3-
+   Bild dekomprimiert) nach monochrom gewandelt.
+ - Da es bei STAD-Bildern neben der Extension ".PAC" noch viele andere (z.B.
+   ".SEQ") gibt und es die eindeutigste dieser "magischen Zahlen" hat, wird
+   nur noch auf diese und nicht mehr auf die Extension getestet.
+ - Metafiles werden in allen Auflösungen dargestellt. Damit das Bild richtig
+   angezeigt wird, sollte in der Datei die maximale Ausdehnung korrekt
+   angegeben sein. Manche Programme lassen diese auf 0, weshalb GUCK sie
+   nicht anzeigt (alle Koordinaten werden durch 0 dividiert).
+ - Dateien, die genau 32000 Bytes lang sind und nicht als reinen Text identi-
+   fiziert wurden (weil mindestens eine "Zeile" länger als 300 Bytes ist),
+   werden wie Bilder im Screenformat behandelt.
+ - Falls bei unbekanntem Bildformat in den Bildmodus geschalten wird, wird
+   von einem monochromen Bild von 640 Pixeln Breite ausgegangen. Die Höhe
+   bestimmt sich aus der Dateilänge.
+
+
+ 2.2.2 Tastenbelegung im Grafikmodus
+                                    
+ Die Tastatur ist im Vergleich zum Textmodus mager belegt, trotzdem folgt
+ hier die Übersicht:
+
+ - [I] invertiert den Bildschirm (für alle, die lieber weiss auf schwarz
+   arbeiten, bei Bildern aber nicht invers denken wollen).
+ - [S] speichert den aktuellen Bildschirm im Degasformat. Der Name ist mit
+   dem der geladenen Datei identisch, aber mit der Endung .PI1, .PI2 oder
+   .PI3; so wird also "C:\BILDER\TEST.NEO" zu "C:\BILDER\TEST.PI3". Falls
+   die Datei bereits existiert, sehen Sie eine entsprechende Fehlermeldung.
+   Die Möglichkeit Bilder abzuspeichern ist vor allem bei Metafiles und
+   Bildern aus der niedrigen Auflösung interessant. (Beide Ideen sind von
+   Martin Leidig). Diese Funktion (wie auch [Ctrl-S] weiter unten) ist
+   nur in den ursprünglichen 3 Bildschirmmodi (low, medium, high) möglich.
+ - [Ctrl-S] speichert den aktuellen Bildschirm im Degasformat. Hier wird eine
+   bereits existierende Datei gleichen Namens jedoch gnadenlos überschrieben.
+ - [Alt-Help] ist eigentlich keine eingebaute Funktion, dürfte aber trotzdem
+   von manchem Anwender benutzt werden.
+ - [Ctrl-E] ruft den Grafikeditor auf (siehe Kapitel 2.3).
+ - [N] zeigt die nächste Datei an, falls auf der Kommandozeile mehrere
+   Dateien angegeben wurden.
+ - [Q], [Esc], [Undo], [Ctrl-Q] beenden das Programm (eine dieser Tasten
+   reicht!).
+
+
+ 2.2.3 Maustasten
+                 
+ Die Maustasten sind wie im Textmodus belegt. Siehe deshalb 2.1.4
+
+
+
+ 2.3 Editoraufruf
+ ----------------
+
+ Mit INSTGUCK können zwei Editoren definiert werden, je einer für den Text-
+ und den Grafikmodus. Diese werden durch Drücken von [Ctrl-E] aufgerufen.
+ Der Editor wird mit shel_write() gestartet, danach kehrt man also nicht mehr
+ zu GUCK zurück. Der Aufruf mit shel_write() funktioniert nicht aus allen
+ Shells (alternative Benutzeroberflächen) heraus, er ist jedoch nötig, da
+ sonst kein GEM-Editor aufgerufen werden könnte.
+
+
+
+ 2.4 Die Eingabezeile
+ --------------------
+
+ Zur Eingabe der Zeilen- bzw. Bytenummer bei [G] und zur Eingabe des Such-
+ strings wird eine eigene minimale Kommandozeile benutzt. Hier einige
+ Hinweise zu deren Benutzung:
+
+ - [ESC] löscht die ganze Eingabezeile.
+ - [Backspace] löscht das Zeichen links vom Cursor.
+ - [Return] verlässt die Eingabezeile.
+ - Controlzeichen (ASCII 0 bis 31) können nicht eingegeben werden.
+ - Bei der Eingabe einer Nummer können nur Ziffern eingegeben werden.
+
+
+
+ 3. INSTGUCK oder Wie konfiguriere ich GUCK
+ ==========================================
+
+ Eilige Anwender sollten dieses Kapitel überspringen und direkt das
+ entsprechende Kapitel aus der Serie "Kurzinstallation für Eilige"
+ lesen.
+
+ Menüpunkte werden in der Form <Titel/Eintrag> angegeben. So bezeichnet
+ <Datei/Beenden> den Eintrag "Beenden" im Menü "Datei".
+
+ Zuerst machen Sie sich ein Backup von allen Dateien. Falls sie eine Harddisk
+ besitzen und GUCK auf die Harddisk installieren möchten, kopieren Sie alle
+ Dateien in einen Ordner GUCK auf ihrer Harddisk. Danach starten Sie (mit
+ Doppelklick) INSTGUCK.PRG (dieses befindet sich im Ordner GUCK, falls Sie
+ eine fachgerechte Kopie erhalten haben).
+ Wenn Sie Lust haben, können Sie im <INSTGUCK/Über INSTGUCK>-Dialog ein
+ bisschen herumspielen, danach geht es aber an die eigentliche Installation:
+
+ - Sie gehen auf <Datei/Suche GUCK>.
+ - Im Dateiauswahldialog (hübsches Wort, nicht??) suchen Sie GUCK. Falls es
+   GUCK.TTP heisst (Voreinstellung), drücken Sie einfach <Return> oder be-
+   treten diesen Dialog gar nicht erst.
+ - Sie gehen auf <Datei/Kopiere GUCK nach>.
+ - Sie können dort das Laufwerk, den Ordner und den Dateinamen wählen. Nach-
+   dem Sie OK gedrückt haben, werden Sie nach den Pfaden für die beiden
+   Editoren und die .CFG-Datei gefragt. Sobald Sie diesen Dialog verlassen,
+   wird GUCK dorthin kopiert. (Um ein bereits kopiertes GUCK mit anderen
+   Editoren oder einem anderen Druckertreiber zu versehen, kopieren Sie GUCK
+   einfach auf sich selbst (das heisst, dass Pfad für "Kopiere GUCK"
+   derselbe ist, wie den, den Sie bei "Suche GUCK" eingestellt haben.)
+
+   Durch Doppelklick auf die 3 Pfadzeilen erscheint ein Dateiauswahldialog
+   (Nein! Nicht schon wieder dieses Monsterwort!), in dem Sie die Datei oder
+   das Programm suchen können. Die Maximallänge der Pfade beträgt 31 Zeichen.
+   Falls ein Editorpfad leer sein sollte, ist kein Editor definiert.
+   Ist jedoch der Pfad des Druckertreibers leer, wird ohne Zeichen-
+   wandlung gedruckt.
+
+ - Falls Sie GUCK noch nie installiert haben oder das neue GUCK an einen
+   anderen Ort kopiert haben, wählen Sie aus dem Menü "Installieren" den
+   Ihnen zusagenden Eintrag:
+   * <Installieren/auf Disk> trägt die Position des kopierten GUCK in der
+     Datei DESKTOP.INF auf Ihrem Bootlaufwerk ein. Das Bootlaufwerk ist jenes
+     Laufwerk, mit dem Sie das System gestartet haben. Bei allen Besitzern
+     einer Harddisk (auch Wechselplatte usw.) dürfte dies C:, bei den anderen
+     meist A: sein. Diese Änderung wird erst nach dem nächsten RESET wirksam.
+     Falls INSTGUCK kein DESKTOP.INF finden sollte, müssen Sie GUCK mit dem
+     nächsten Menüpunkt im Speicher installieren und dann mit der Funktion
+     <Extras/Arbeit sichern> des DESKTOP ein DESKTOP.INF anlegen (in welchem
+     GUCK dann bereits installiert ist).
+   * <Installieren/im Speicher> trägt die Position des kopierten GUCK in der
+     vom DESKTOP im Speicher gehaltenen Kopie des DESKTOP.INF ein. Dies ist
+     für diejenigen, die GUCK nur "mal kurz" ausprobieren möchten. Falls es
+     dann trotzdem gefallen sollte, kann es auf dem DESKTOP mit <Extras/
+     Arbeit sichern> gesichert werden.
+   * <Installieren/Speicher und Disk> trägt die Position des kopierten GUCK
+     an den beiden oben erwähnten Stellen ein und verbindet so die
+     Annehmlichkeiten beider Lösungen.
+   * <Installieren/Überall entfernen> entfernt GUCK und andere, in analoger
+     Weise installierte, Programme aus dem Speicher und aus dem DESKTOP.INF,
+     das mit <Installieren/auf Disk> verändert wurde (oder würde). Für
+     Details sehen Sie bitte in der Beschreibung zu diesem Menüpunkt nach.
+ - Sie verlassen jetzt INSTGUCK.PRG und doppelklicken auf einige Dateien, um
+   GUCK auszuprobieren. Programme werden natürlich noch normal gestartet!
+   Falls Sie aber trotzdem ein Programm mit GUCK ansehen wollen, können Sie:
+   - Das Programm umbenennen, so dass es nicht mehr auf .PRG, .APP, .TOS oder
+     .TTP endet und dann doppelklicken. Vergessen Sie nicht, dem Programm
+     anschliessend wieder seinen alten Namen zu geben.
+   - GUCK.TTP anklicken und in der erscheinenden Dialogbox den Pfad und Namen
+     des "Opfers" eintragen.
+
+ Falls Sie einem anderen Programm die "Autostart"-Fähigkeiten von GUCK bei-
+ bringen wollen, starten Sie INSTGUCK.PRG und wählen mit <Datei/Suche GUCK>
+ diese Applikation aus. Danach wählen Sie einen der ersten drei Einträge
+ im "Installieren"-Menü.
+
+ Falls Sie besonders viel Musse haben sollten, geniessen Sie doch den
+ Bildschirm von INSTGUCK einige Sekunden lang und sehen Sie dem Mauszeiger
+ zu, wie er so ruhig auf dem grauen Desktop sitzt.
+
+
+ 3.1 Erklärung des Autostarts
+ ----------------------------
+
+ Wie Sie sicher bereits bemerkt haben, kann man Programme auf beliebige
+ Dateien anmelden. Diese Dateien werden meist aufgrund ihrer Extension
+ ausgewählt. Im DESKTOP.INF existiert jedoch ein weiterer Eintrag, der
+ sagt, welches Programm bei allen nicht anderweitig angemeldeten Dateien
+ gestartet werden soll. Da hier im Normalfall kein Dateiname eingetragen
+ ist, wird dann eine interne Funktion des DESKTOPs gestartet: Der DESKTOP
+ meldet sich mit dem bekannten Dialog "Diese Datei kann nur angezeigt oder
+ gedruckt werden: Anzeigen, Drucken, Abbruch".
+
+ INSTGUCK.PRG ändert nun diesen Eintrag, so dass er auf ein beliebiges
+ Programm (meist GUCK.TTP) zeigt. Dieses wird dann anstelle dieser Funktion
+ des DESKTOPs gestartet.
+
+ Dieser Eintrag meldet GUCK.TTP (oder sonstwas) auf *.*, also alle Dateien,
+ an. Dadurch, dass dies der erste Eintrag ist, wird er jedoch nur beachtet,
+ falls nicht einer der anderen Einträge zutrifft (z.B. Anmeldung von
+ WORDPLUS.PRG auf *.DOC). Somit hat dieser Eintrag die niedrigste Priorität.
+
+ Sollten Sie jedoch GUCK.TTP mit <Extras/Anwendung anmelden> auf den Dateityp
+ "*" anmelden (gehen sie _NICHT_ auf <Extras/Arbeit sichern>!), dann können
+ Sie keine Programme mehr starten, da diese alle als zu GUCK gehörende
+ Dokumente angesehen würden. Der letzte Eintrag hat also die höchste
+ Priorität und kann alle anderen Anmeldungen blockieren.
+
+
+
+ 4. Die Funktionen von SETUP
+ ===========================
+
+ Erst mit SETUP können Sie die Geschwindigkeit von GUCK (und auch TEMPUS)
+ voll geniessen: Es stellt die Tastaturwiederholungsrate auf den höchstmögli-
+ chen Wert ein. Weiterhin stellt es den Druckertyp auf "Epson" ein, so dass
+ Hardcopies in ihrer vollen Pracht erstrahlen. Darüberhinaus schaltet es den
+ lästigen Tastenklick aus. Bis hier macht es nichts, das das "Kontrollfeld"-
+ Accessory nicht auch könnte; SETUP belegt aber nach dem Aufruf aus dem AUTO-
+ Ordner keinen Speicherplatz oder Accessoryeintrag.
+
+ Es hat jedoch noch einen weiteren Vorteil: Wenn Sie während dem Aufstarten
+ die Taste [Control] gedrückt halten und im Hauptinhaltsverzeichnis ihres
+ Bootlaufwerkes (in dem der AUTO-Ordner liegt) eine Datei namens COMMAND.TOS
+ liegt, so wird diese gestartet. Diese Funktion brauche ich jeweils, falls
+ (wieder) einmal irgend ein Accessory oder AUTO-Programm, welches nach SETUP
+ im AUTO-Ordner gestartet würde, abstürzen sollte - weil es sich zum
+ Beispiel nicht mit einem anderen verträgt - können sie im COMMAND.TOS (einem
+ beliebigen GEM-unabhängigen Kommandointerpreter) diese Dateien umbenennen
+ oder löschen, so dass sie nicht mehr gestartet werden. Dies erspart Ihnen
+ vor allem beim Arbeiten mit einer (oder auch mehreren) Harddisk viel Mühe.
+
+ Die Reihenfolge, in der die AUTO-Ordner-Programme gestartet werden, ent-
+ spricht der Reihenfolge, in der die Einträge im Inhaltsverzeichnis vor-
+ handen sind. Diese hat im allgemeinen nichts mit der Anzeige im DESKTOP
+ gemeinsam, bei einigen alternativen Benutzeroberflächen (z.B. GEMINI) können
+ Sie jedoch auf unsortierte Darstellung umschalten. Um SETUP als erstes
+ Programm in den AUTO-Ordner zu befördern, gibt es einen einfachen Weg: Sie
+ kopieren den ganzen Ordner an irgendeinen anderen Ort, löschen dann seinen
+ Originalinhalt und kopieren SETUP.PRG als erstes wieder hinein. Danach
+ kopieren Sie die restlichen Dateien aus dem gesicherten Ordner wieder in
+ den AUTO-Ordner.
+
+ Neuere SETUPs löschen auch den sogenannten Shell-Pointer (_shell_p). Dieser
+ wird im Zusammenhang mit verschiedenen Kommandooberflächen (MUPFEL, GULÄM
+ etc.) benötigt, beim RESET vom TOS jedoch nicht richtig gelöscht. So macht
+ SETUP das Programm SHELL0 (liegt bei GEMINI/MUPFEL bei) überflüssig.
+
+
+
+ 5. Kurzinstallation für eilige Floppybesitzer
+ =============================================
+
+ So eilig können Sie es eigentlich gar nicht haben, sonst hätten Sie sich
+ schon lange eine Harddisk gekauft! Falls doch, beachten Sie folgendes:
+
+ Sollten Sie bereits eine RAM-Disk besitzen, die ausgewählte Dateien beim
+ Systemstart automatisch hineinkopiert, so kopieren Sie den Ordner GUCK oder
+ zumindest GUCK.TTP auf ihre Bootdiskette und stellen den Autokopiervorgang
+ so ein, dass GUCK mit in die RAM-Disk kopiert wird. Wie Sie dies einstellen
+ können, steht in der Beschreibung zu Ihrer RAM-Disk.
+ 
+ Falls Sie keine derartige RAM-Disk besitzen, sollten Sie sich eine solche
+ zulegen, oder mindestens nach einem externen Programm Ausschau halten, das
+ automatisch Dateien kopieren kann.
+
+
+
+ 6. Kurzinstallation für eilige Harddiskbesitzer
+ ===============================================
+
+ Kopieren Sie sich den ganzen Ordner GUCK irgendwo auf die Harddisk und
+ starten Sie danach INSTGUCK.PRG. Danach klicken Sie auf den Menüpunkt
+ <Installieren/Speicher und Disk> oder drücken [F3] und verlassen danach
+ das Programm. Dies war dann auch schon alles!
+
+
+
+ 7. Kurzinstallation für Benutzer von GEMINI
+ ===========================================
+
+ GEMINI ist ein sehr guter alternativer Desktop von Gereon Steffens und
+ Stefan Eissing. Er ist Shareware und die Version 1.0 ist unter anderem
+ in der Mailbox "Maus Münster" (Telefon neu +49-251-77261) als GEMINI10.ZOO
+ zu erhalten. Diese Beschreibung bezieht sich auf Version 1.1, welche den
+ registrierten Benutzern zugeschickt wird. Die Installation bei V1.0
+ ist ganz ähnlich.
+
+ Nachdem Sie GUCK auf Ihre Arbeitsdiskette bzw. Harddisk kopiert haben,
+ melden Sie GUCK.TTP mit "Applikation..." bei GEMINI an. In der dort
+ erscheinenden Dialogbox geben Sie einen Stern ("*") ein. Darunter wählen
+ Sie zusätzlich zu "Immer Parameter übergeben" noch "Vorher alle Fenster
+ schliessen" und "Es ist eine GEM-Anwendung" an. Danach gehen Sie auf
+ <Extras/Status sichern>.
+
+ Falls dies nicht Ihre erste Anmeldung war, öffnen Sie nun die Datei
+ "GEMINI.INF" (liegt im selben Verzeichnis wie GEMINI selbst) mit einem
+ Texteditor (z.B. 1st Word (Plus) mit ausgeschaltetem WP-Modus). Nach der
+ Zeile, die mit "#I" beginnt, folgen mehrere Zeilen, die mit "#R" beginnen.
+ Nach diesen kommen die uns interessierenden Zeilen: "#A". Sorgen Sie nun
+ dafür, dass die Zeile, in der GUCK.TTP steht, die erste dieser "#A"-Zeilen
+ wird (am besten nehmen Sie dazu die Blockoperationen Ihres Texteditors).
+ Das war's schon! Speichern Sie nun den Text, es geht gleich weiter:
+
+ Falls Sie ab&zu auch MUPFEL verwenden, sollten Sie in der Datei MUPFEL.MUP
+ folgende Zeile einfügen (die Stelle ist beliebig, sinnvollerweise aber
+ in der Nähe der anderen setenv-Befehlen):
+
+ setenv GUCK_TTP B:Y,W:Y
+
+
+
+ 8. Probleme und ihre Lösung
+ ===========================
+
+ - GUCK stürzt ab
+   SOFORT(!) mit mir Kontakt aufnehmen, ausser Sie haben eine der folgenden
+   bekannten Problemfälle:
+   * Die Fileselectorbox von M. Patzel (z.B. Version 4/1989) befindet sich
+     im AUTO-Ordner und das "New Fileselector"-Accessory von C. Allan ist
+     auch installiert.
+     In diesem Falle sollten Sie eine der beiden Fileselectorboxen entfer-
+     nen, oder GUCK.TTP in GUCK.PRG umbenennen, bevor Sie es (nochmals)
+     installieren.
+   * Falls Sie die Fileselectorbox von M. Patzel zusammen mit dem xVT52-
+     Emulator verwenden sollten, können Sie überhaupt keine TOS- und TTP-
+     Programme mehr aufstarten. Dies hat nichts mit GUCK zu tun; um GUCK
+     aber trotzdem verwenden zu können, sollten Sie es wie oben angegeben
+     umbenennen oder auf eines der beiden AUTO-Ordnerprogramme verzichten.
+   Dass die Fileselectbox von M. Patzel beide Male hier auftaucht, hat nichts
+   mit einer allfälligen Abneigung meinerseits zu tun! Es liegt einfach in
+   der Natur der Dinge, dass es schwer ist, im AES-/VDI-Vektor drinzubleiben,
+   da er vom Betriebssystem beim Start und Ende eines TOS-Programmes
+   verändert wird. Und sobald zwei Programme sich dort einhängen, führt dies
+   automatisch zu Problemen, und GUCK als häufig gestartetes TTP-Programm
+   zeigt diese auf.
+
+ - Ein mit einem Fontwechselprogramm geänderter Systemfont wird von GUCK
+   ignoriert
+   Verwenden Sie einen Font Changer, der auch beim Start von TOS- und TTP-
+   Programmen den geänderten Zeichensatz beibehält, oder ändern sie den
+   Namen von GUCK (siehe weiter oben).
+
+ - Der Bildschirm sieht schrecklich aus
+   Es könnte sein, dass sich Ihr Geschmack überhaupt nicht mit meinem deckt,
+   oder es liegt daran, dass die entsprechende Auflösung nicht unterstützt
+   wird.
+
+
+ Soweit mir bekannt ist, bestehen ansonsten keine Probleme mit irgendwelchen
+ Programmen oder TOS-Versionen, GUCK läuft sogar unter OverScan und auf dem
+ Atari TT.
+ Die verschiedenen Vorgängerversionen dieses GUCK wurden und werden seit
+ über zwei Jahr ohne Probleme auf den unterschiedlichsten Computern der
+ Atari-ST-Serie verwendet.
+
+
+
+ 9. Technische Daten für Interessierte
+ =====================================
+
+ Die aktuelle Versionen von GUCK und AusGUCK wurden mit dem Turboass von
+ Markus Fritze entwickelt. Die Source zu GUCK umfasst 120K, aufgeteilt auf
+ 5000 Zeilen.
+
+ INSTGUCK, das Installationsprogramm, wurde mit Turbo C von Borland entwik-
+ kelt und besteht aus 930 Zeilen, die 22K füllen. Hinzu kommt noch eine
+ Resourcedatei von über 6K Länge.
+
+
+
+ 10. Technische Daten für Uninteressierte
+ ========================================
+
+ (keine)
+
+
+
+ 11. Sichtbare Verbesserungen in den letzten Versionen
+ =====================================================
+
+ Dieser Abschnitt ist für alle die gedacht, die bisher schon mit GUCK
+ zufrieden waren, und nur wissen wollen, was ich in der Zwischenzeit alles
+ getan habe. Wer allerdings mehr als ungefähr 0.3 Versionen im Rückstand
+ ist, tut gut daran, die ganze, unterdessen mehrfach überarbeitete Dokumen-
+ tation nochmals zu lesen.
+
+ - V1.3:  Bilder speichern.
+          Bildschirm invertieren (für alle, die weiss auf schwarz arbeiten).
+          Schon seit längerer Zeit vorhanden, aber nicht dokumentiert:
+          GUCK verkraftet auch unvollständige Dateinamen, sogenannte
+          Wildcards. So zeigt "*.PI3" das erste Bild im aktuellen Ordner an
+          (natürlich nur, wenn es auch dort auch ein Bild gibt, das auf .PI3
+          endet).
+ - V1.3c: Beim Speichern eines Bildes wird dorthin gespeichert, von wo auch
+          die aktuell angezeigte Datei kam. Es werden dabei keine Dateien
+          überschrieben, ausser Sie drücken [Ctrl-S].
+ - V1.3d: Invertieren ist jetzt auch im Textmodus möglich. Der aktuelle
+          Zustand wird auch im Hilfetext angezeigt (wie alle anderen Flags)
+ - V1.4:  Hintergrundprogramme (z.B. Wecker und Terminalprogramme als ACC)
+          sollten jetzt auch während GUCK weiterarbeiten können. Daher kommt
+          auch der kaum merkliche Ruck nach dem Scrollen von jeweils 16
+          Zeilen.
+ - V1.4a: Tastendrücke kommen sofort. GUCK kann nicht mehr mit [Ctrl-C]
+          verlassen werden, dafür gibt es neu [Ctrl-Q].
+ - V1.4c: Die Textdarstellung wurde angepasst, so dass sie jetzt in allen
+          Auflösungen (gering, mittel, hoch, Overscan, Grossmonitor, ...)
+          funktionieren sollte.
+ - V1.4d: Zum Abbrechen des Ausdruckes kann (und soll) man die [ESC]-Taste
+          länger drücken. Sobald die Zeile "Drucke ..." verschwindet, kann
+          man sie loslassen (kann man natürlich schon früher).
+ - V1.4e: Tabulatorbreite wählbar: AUS (Anzeige als Ührchen), 2, 4 oder 8.
+ - V1.4f: [Ctrl-L] sendet einen FormFeed an den Drucker.
+ - V1.5:  Übersichtlichere Hilfeseite.
+          Die Bilder sollten (endlich!) in allen Auflösungen laufen.
+          Die Bildformate .PI2 und .PC1 werden neu unterstützt.
+          In zu grossen Bildern kann man (endlich!) scrollen.
+ - V1.5a: Ein Fehler in der STAD-Dekompression behoben.
+          Mit [Backspace] kommt man 20 Zeilen nach oben.
+ - V1.5b: Läuft nun auch auf dem Matrix-Grossbildschirm (die Treibersoftware
+          setzte eine Systemvariable nicht bzw. falsch).
+ - V1.5c: Der Druckertimeout wurde auf 10 Sekunden erhöht, damit auch
+          langsame Einzelblatteinzüge mitkommen.
+ - V1.6:  Neue Bildformate: Calamus-Rastergraphik und -Page-IMG.
+          20 Sekunden nach einem Druckertimeout versucht GUCK den Drucker
+          erneut anzusprechen, falls der Benutzer keine Taste drückt.
+ - V1.6a: Die Dateigrösse wird anders bestimmt, so dass auch Dateien geladen
+          werden können, die erst beim Laden entpackt werden.
+          GUCK wartet auf das Loslassen von [Ctrl-L], bevor der Formfeed
+          verschickt wird (sonst gibt es Probleme mit Laserbrain).
+          XDumpmodus eingebaut (siehe Kapitel 2.1.2)
+ - V1.6b: Neue Funktionen: Goto Line/Byte und Find String/Find Same.
+          Beim Umschalten zwischen Textmodus und WP-Modus bzw. beim Wechseln
+          der Tabulatorgrösse bleibt der Text jetzt am selben Ort stehen.
+          AusGUCK gibt es nicht mehr, da die meisten Benutzer von GUCK, die
+          nicht über eine Harddisk verfügen, zumindest im Besitze einer
+          guten RAM-Disk sind.
+ - V1.7:  Aus GUCK heraus ist ein Editor aufrufbar (je einer für Text- und
+          Graphikmodus).
+          Beim Ausdrucken können die Zeichen optional über eine CFG-Datei
+          im 1st-Word-Format gewandelt werden.
+          Falls in der Kommandozeile mehrere Dateinamen übergeben werden,
+          kann man mit [N] zur jeweils nächsten Datei wechseln.
+
+ Des weiteren wurden noch einige kleinere Fehlerkorrekturen und grössere
+ interne Umstrukturierungen vorgenommen.
+
+
+
+ 12. Bugs (Fehler und Unschönheiten)
+ ===================================
+
+ - Bilder speichern funktioniert nur in den ursprünglichen 3 Bildschirm-
+   auflösungen.
+ - Die Helpseite ist nur mit mindestens 80x25 Zeichenpositionen lesbar.
+ - Metafiles werden nur richtig angezeigt, falls im Header auch die minimalen
+   und maximalen Bildkoordinaten richtig angegeben sind.
+
+
+
+ 13. Ich möchte folgenden Leuten danken
+ ======================================
+
+ (Wer sich nicht auf dieser Liste wiederfindet, sich aber trotzdem hier
+ erwähnt sehen möchte, soll sich vertrauensvoll an mich wenden)
+
+ Die Reihenfolge ist (in etwa) chronologisch.
+
+ - Stefan Herzer und Peter Melzer für die STAD-Dekompression
+ - Bernhard Bayer für den Algorithmus zum Darstellen der Metafiles
+ - Urs Müller für die Errordiffusion
+ - Diversen Mitgliedern des ACC Zürich für ihre ständige Testerei
+ - Markus Fritze und Sören Hellwig für ihr Gespann TurboAss/Bugaboo
+ - Tim Fuhrmann, Laurenz Prüssner und vielen anderen für ihr ständiges
+   Drängen nach einer Farb- bzw. OverScan-Version
+ - Hansjürg Bürgler für das Zur-Verfügung-Stellen seines Farbmonitors
+ - Martin Wunderli für das Zur-Verfügung-stellen-Wollen seines Farbmonitors
+   (er rief zehn Minuten später an)
+ - Raymond Stofer für seine allgemeine Degas-Dekompression
+ - Karsten Isakovic für sein OverScan, ohne das GUCK wahrscheinlich
+   weiterhin nur in 640x400 monochrom laufen würde
+ - Christof Wyss für sein nettes Titelbild
+
+
+
+ 14. Liste der Dateien
+ =====================
+
+ GUCK.TXT                       Dieser Text
+ GUCK.TTP                       Darum gings in diesem Text: das Hauptprogramm
+ INSTGUCK.PRG                   Installationsprogramm für GUCK.TTP
+ SETUP.PRG                      Hilfsprogramm für den AUTO-Ordner
+ SETUP.S                        Die Source dazu
+
+
+
+ 15. Copyrightbestimmungen
+ =========================
+
+ GUCK ist seit V1.3 ein Shareware-Programm von
+
+        Marcel Waldvogel
+        Hägetstalstr. 37
+        CH - 8610  Uster
+
+ Unter der Voraussetzung, dass immer alle Dateien im Ordner GUCK (siehe
+ Kapitel 15) ungeändert kopiert werden, darf GUCK von privaten Anwendern
+ beliebig ausprobiert und kopiert werden. Das Programm darf und soll auch
+ über Mailboxsysteme verbreitet werden. Dazu sollten alle Dateien im Ordner
+ GUCK in einem Archiv (LHARC oder ähnlich) zusammengefasst werden.
+
+ Nun ist das aber kein PD-Programm, sondern Shareware. Das heisst, wer das
+ Programm regelmässig benutzen will, hat die Arbeit, die dahinter steckt,
+ (das sind unterdessen über zwei Jahre) mit 20 DM oder sFr. zu entlöhnen,
+ wodurch er erst das Recht erhält, GUCK regelmässig zu benutzen. Dafür
+ erhält man auch mindestens ein Update (entweder sofort, oder sobald sich
+ etwas wichtiges an GUCK geändert hat). Diese Geld nehme ich über mein
+ Konto oder auch als Bargeld. Schecks bitte ich zu vermeiden, da beinahe
+ die Hälfte des Beitrages als Bearbeitungsgebühr an die Bank fliesst.
+
+ Der Erwerb irgendwelcher Disketten, auf welchen GUCK als Zugabe
+ mitkopiert wird, (z.B. die TurboAss-Diskette von Markus Fritze oder die
+ Diskette zur Ausgabe 9/90 der Zeitschrift TOS) zieht alleine noch kein
+ Recht zu regelmässigen Nutzung nach sich, da der Autor (also ich) vom Erlös
+ aus dem Verkauf dieser Disketten keinen müden Franken/keine müde Mark zu
+ sehen bekommt.
+
+ Wer GUCK kommerziell benutzen will, hat sich vorher mit dem Autor in
+ Verbindung zu setzen.
+
+ Für Probleme, Wünsche und anderes bin ich auch über folgende elektronische
+ Wege erreichbar:
+
+ FidoNet:       Marcel Waldvogel (2:302/802.26)
+ MagicNet:	Trendbox;26:Voegi
+ UUCP:          mwaldvog@iiic.ethz.ch
+
+ Für Geldüberweisungen bin ich über folgende Bankverbindung zu erreichen:
+
+ Zürcher Kantonalbank, CH-8610 Uster, Kto. 1130-0810.618
+
+ Ich kann keine Haftung für irgendwelche direkten oder indirekten Schäden -
+ einschliesslich aber nicht beschränkt auf materielle oder finanzielle -
+ übernehmen, die durch die Benutzung von GUCK oder die Untauglichkeit
+ von GUCK für einen bestimmten Zweck entstehen.
+
+ Einige Produktebezeichnungen, die in diesem Text erwähnt werden, sind
+ (eingetragene) Warenzeichen und sollten als solche betrachtet werden.

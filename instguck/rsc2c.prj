@@ -1,0 +1,9 @@
+               ; RSC2C.PRJ   for use with single module programs
+               ; -------------------------------------------------
+*              ; name of executable pgm is topmost window
+=              ; list of modules follows...
+tcstart.o      ; startup code
+*              ; compile topmost window
+tcstdlib.lib   ; standard lib
+tctoslib.lib   ; TOS lib
+tcgemlib.lib   ; AES and VDI lib

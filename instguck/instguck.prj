@@ -1,0 +1,16 @@
+instguck.prg
+=
+tcstart.o
+;tcmw.o
+instguck.c      (instguck.h)
+;iguck12.c      (instguck.h)
+rsrc_tc.s
+key.c
+;key_uppe.s
+instgrsc.c
+
+;string.o		;Meine Stringlib
+tcstdlib.lib
+tctoslib.lib
+shortaes.lib		;Meine AES-Library
+;tcgemlib.lib
